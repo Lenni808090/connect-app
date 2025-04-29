@@ -14,6 +14,12 @@ const roomSchema = new mongoose.Schema(
         min: 0
     },
 
+    currentScore:{
+        type: Number,
+        default: 0,
+        min: 0,
+    },
+    
     players:[{
         username: {
             type: String,
@@ -51,6 +57,11 @@ const roomSchema = new mongoose.Schema(
         }
 
     }],
+
+    categories: {
+        type: Array,
+        default: null,
+    },
 
     createdAt: {
         type: Date,
