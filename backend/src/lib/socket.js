@@ -1,3 +1,5 @@
+
+
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
@@ -5,7 +7,6 @@ import Room from "../models/room.model.js";
 
 const app = express();
 const server = http.createServer(app);
-
 const io = new Server(server, {
     cors: {
         origin: ["http://localhost:5173"],
@@ -17,6 +18,7 @@ io.on("connection", (socket) => {
 
     socket.on("join_room", async (roomId) => {
         socket.join(roomId);
+        console.log("a user joined room", roomId)
         const room = await Room.findOne({ roomId });
         if (room) {
             io.to(roomId).emit('player_joined', { players: room.players });
