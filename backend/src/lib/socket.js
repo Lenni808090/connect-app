@@ -25,7 +25,11 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("game_started", async ({ roomId }) => {
+    socket.on("start_game", async (roomId) => {
+        console.log("Game started in room", roomId);
+        // Benachrichtige alle Spieler im Raum, dass das Spiel gestartet wurde
+        io.to(roomId).emit('game_started', { roomId });
+        
         const room = await Room.findOne({ roomId });
         if (room) {
             io.to(roomId).emit('game_update', {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useRoomStore } from '../store/useRoomStore';
 import socket from '../utils/socket';
@@ -7,13 +7,18 @@ const LobbyPage = () => {
   const { roomId } = useParams();
   const { players, getPlayerNames, leaveRoom } = useRoomStore();
   const navigate = useNavigate();
+  const [copySuccess, setCopySuccess] = useState('');
+  
+  // Find if current player is host
+  const currentPlayer = players.find(player => player.socketId === socket.id);
+  const isHost = currentPlayer?.isHost || false;
 
   useEffect(() => {
     if (roomId) {
-      // Initial fetch of players
+      socket.emit('join_room', roomId);
+      
       getPlayerNames(roomId);
 
-      // Set up socket listeners
       socket.on('player_joined', () => {
         getPlayerNames(roomId);
       });
@@ -22,35 +27,58 @@ const LobbyPage = () => {
         getPlayerNames(roomId);
       });
 
-      // Set up periodic refresh
-      const intervalId = setInterval(() => {
-        getPlayerNames(roomId);
-      }, 3000); // Refresh every 3 seconds
+      socket.on('game_started', () => {
+        navigate(`/game/${roomId}`, { replace: true });
+      });
+
+      const handleBeforeUnload = async () => {
+        socket.emit('leave_room', roomId);
+        await leaveRoom({
+          roomId,
+          socketId: socket.id,
+        });
+      };
+
+      window.addEventListener('beforeunload', handleBeforeUnload);
 
       return () => {
         socket.off('player_joined');
         socket.off('player_left');
-        clearInterval(intervalId);
+        socket.off('game_started');
+        window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }
-  }, [roomId, getPlayerNames]);
+  }, [roomId, getPlayerNames, leaveRoom, navigate]);
 
   const handleLeaveRoom = async () => {
     try {
       socket.emit('leave_room', roomId);
-
       await leaveRoom({
         roomId,
         socketId: socket.id,
       });
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      
       navigate('/', { replace: true });
     } catch (error) {
       console.error('Error leaving room:', error);
     }
+  };
+
+  const handleStartGame = () => {
+    if (isHost) {
+      socket.emit('start_game', roomId);
+      
+    }
+  };
+
+  const copyRoomIdToClipboard = () => {
+    navigator.clipboard.writeText(roomId)
+      .then(() => {
+        setCopySuccess('Copied!');
+        setTimeout(() => setCopySuccess(''), 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy room ID: ', err);
+      });
   };
 
   return (
@@ -58,6 +86,16 @@ const LobbyPage = () => {
       <div className="bg-white p-8 rounded-lg shadow-md w-96">
         <h2 className="text-2xl font-bold mb-6 text-center">Lobby</h2>
         <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-semibold">Room ID: {roomId}</h3>
+            <button 
+              onClick={copyRoomIdToClipboard}
+              className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm"
+            >
+              {copySuccess || 'Copy ID'}
+            </button>
+          </div>
+          
           <h3 className="text-xl font-semibold">Spieler in der Lobby:</h3>
           <ul className="space-y-2">
             {players.map((player) => (
@@ -72,6 +110,15 @@ const LobbyPage = () => {
               </li>
             ))}
           </ul>
+          
+          {isHost && (
+            <button
+              onClick={handleStartGame}
+              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
+            >
+              Start Game
+            </button>
+          )}
           
           <button
             onClick={handleLeaveRoom}
