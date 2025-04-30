@@ -16,7 +16,7 @@ export const useRoomStore = create((set) => ({
 
   createRoom: async (data) => {
     try {
-      const res = await axiosInstance.post("/rooms/createRoom",data);
+      const res = await axiosInstance.post("/rooms/createRoom", data);
       set({ success: res.data.success });
       set({ roomId: res.data.room.roomId });
     } catch (error) {
@@ -26,11 +26,20 @@ export const useRoomStore = create((set) => ({
 
   joinRoom: async (data) => {
     try {
-        const res = await axiosInstance.post("/rooms/joinRoom", data);
-        set({ success: res.data.success });
-        set({ roomId: res.data.room.roomId });
+      const res = await axiosInstance.post("/rooms/joinRoom", data);
+      set({ success: res.data.success });
+      set({ roomId: res.data.room.roomId });
     } catch (error) {
-        console.error("Fehler beim joinen des Raums:", error);
+      console.error("Fehler beim joinen des Raums:", error);
     }
-  }
+  },
+
+  leaveRoom: async (data) => {
+    try {
+      await axiosInstance.post("/rooms/leaveRoom", data);
+      set({ roomId: null });
+    } catch (error) {
+      console.error("Fehler beim leaven des Raums:", error);
+    }
+  },
 }));

@@ -1,9 +1,10 @@
 import express from "express";
-import { createRoom, joinRoom, setCategories, startGame, submitWord, endRound, checkifHost, getRoom } from "../controllers/room.controller.js";
+import { createRoom, joinRoom, setCategories, startGame, submitWord, endRound, checkifHost, getRoom, leaveRoom } from "../controllers/room.controller.js";
 const router = express.Router();
 
 router.post("/createRoom", createRoom);
 router.post("/joinRoom", joinRoom);
+router.post("/leaveRoom", leaveRoom);
 router.post("/setCategories", setCategories);
 router.post("/startGame", startGame);
 router.post("/submitWord", submitWord);

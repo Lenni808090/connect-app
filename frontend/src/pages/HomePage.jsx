@@ -36,6 +36,8 @@ const HomePage = () => {
       roomId: inputRoomId,
       socketId: socket.id,
     });
+
+    
   };
 
   return (

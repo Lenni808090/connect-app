@@ -67,6 +67,27 @@ export const joinRoom = async (req, res) => {
   }
 };
 
+export const leaveRoom = async (req, res) => {
+  try {
+    const { roomId, socketId } = req.body;
+    const room = await Room.findOne({ roomId });
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    room.players = room.players.filter((ply) => ply.socketId !== socketId);
+
+    await room.save();
+
+    return res.status(200).json({ message: "Player removed from room" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
 export const setCategories = async (req, res) => {
   try {
     const { roomId, categories } = req.body;
