@@ -254,7 +254,7 @@ export const getRoom = async (req, res) => {
   try {
     const { roomId } = req.params;
 
-    room = findOne(roomId);
+    const room = await Room.findOne({ roomId });
 
     res.status(200).json(room)
 

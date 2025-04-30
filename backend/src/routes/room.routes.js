@@ -10,5 +10,5 @@ router.post("/submitWord", submitWord);
 router.post("/endRound", endRound);
 router.post("/checkifHost", checkifHost);
 
-router.get("/getRoom/:id", getRoom)
+router.get("/getRoom/:roomId", getRoom)
 export default router;

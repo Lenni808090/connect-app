@@ -1,19 +1,14 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 export const useRoomStore = create((set) => ({
-  playerNames: [],
+  players: [],
   success: [],
   roomId: null,
 
   getPlayerNames: async (data) => {
     try {
       const res = await axiosInstance.get(`/rooms/GetRoom/${data}`);
-      const playerNames = [];
-      for (const player of res.data.players) {
-        playerNames.push(player.username);
-      }
-
-      set({ players: playerNames });
+      set({ players: res.data.players });
     } catch (error) {
       console.error("Failed to fetch players:", error);
     }
