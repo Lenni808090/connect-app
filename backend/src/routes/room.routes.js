@@ -1,11 +1,12 @@
 import express from "express";
-import { createRoom, joinRoom, setCategories, startGame, submitWord, checkifHost, getRoom, leaveRoom, voting, nextRound } from "../controllers/room.controller.js";
+import { createRoom, joinRoom, setCategories, startGame, submitWord, checkifHost, getRoom, leaveRoom, voting, nextRound, setScoreLimit } from "../controllers/room.controller.js";
 const router = express.Router();
 
 router.post("/createRoom", createRoom);
 router.post("/joinRoom", joinRoom);
 router.post("/leaveRoom", leaveRoom);
 router.post("/setCategories", setCategories);
+router.post("/setScoreLimits", setScoreLimit);
 router.post("/startGame", startGame);
 router.post("/submitWord", submitWord);
 router.post("/voting", voting);

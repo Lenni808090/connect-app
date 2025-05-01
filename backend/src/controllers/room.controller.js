@@ -44,7 +44,7 @@ export const createRoom = async (req, res) => {
         "Lernplattformen", "Hobbys", "DIY-Projekte", "Bastelmaterialien", "Musikinstrumente", "Tonarten", "Akkorde", "Lieder", "Songtexte", "Filmzitate",
         "Redewendungen", "Sprichwörter", "Emojis", "Internet-Abkürzungen", "Sprachen der Welt", "Dialekte", "Zeichensysteme", "Typografien", "Schriftarten", "Emo-Stile"
       ],
-      
+      scoreLimit: 5,
     });
 
     await room.save();
@@ -133,6 +133,32 @@ export const setCategories = async (req, res) => {
     });
   } catch (error) {
     console.log("Fehler beim Setzen der Kategorien:", error);
+    res.status(500).json({ error: "Interner Server Fehler" });
+  }
+};
+
+export const setScoreLimit = async (req, res) => {
+  try {
+    const { roomId, scoreLimit } = req.body;
+
+    const room = await Room.findOne({ roomId });
+
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        error: "Raum nicht gefunden",
+      });
+    }
+
+    room.scoreLimit = scoreLimit;
+    await room.save();
+
+    res.status(200).json({
+      success: true,
+      room: room,
+    });
+  } catch (error) {
+    console.log("Fehler beim Setzen des scoreLimits:", error);
     res.status(500).json({ error: "Interner Server Fehler" });
   }
 };
@@ -243,7 +269,7 @@ export const voting = async (req, res) => {
       room.currentScore = 0;
     }
 
-    if(room.currentScore === 5){
+    if(room.currentScore === room.scoreLimit){
       room.gameState = "finished"
     }
 

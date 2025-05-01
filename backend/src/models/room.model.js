@@ -14,6 +14,12 @@ const roomSchema = new mongoose.Schema(
         min: 0
     },
 
+    scoreLimit:{
+        type: Number,
+        default: 0,
+        min: 0,
+    },
+
     currentScore:{
         type: Number,
         default: 0,

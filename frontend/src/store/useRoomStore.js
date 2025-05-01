@@ -107,7 +107,16 @@ export const useRoomStore = create((set) => ({
       const res = await axiosInstance.post(`/rooms/setCategories`, data);
       set({room: res.data.room})
     } catch (error) {
-      console.error("Failed to start next Round", error);
+      console.error("Failed to set Category", error);
+    }
+  },
+
+  setScoreLimit: async (data) => {
+    try {
+      const res = await axiosInstance.post(`/rooms/setScoreLimit`, data);
+      set({room: res.data.room})
+    } catch (error) {
+      console.error("Failed to set scoreLimit", error);
     }
   },
 
