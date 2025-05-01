@@ -17,7 +17,6 @@ const LobbyPage = () => {
   useEffect(() => {
     if (roomId) {
       socket.emit('join_room', roomId);
-      
       getPlayerNames(roomId);
 
       socket.on('player_joined', () => {
@@ -32,32 +31,21 @@ const LobbyPage = () => {
         navigate(`/game/${roomId}`, { replace: true });
       });
 
-      const handleBeforeUnload = async () => {
-        socket.emit('leave_room', roomId);
-        await leaveRoom({
-          roomId,
-          userId,
-        });
-      };
-
-      window.addEventListener('beforeunload', handleBeforeUnload);
-
       return () => {
         socket.off('player_joined');
         socket.off('player_left');
         socket.off('game_started');
-        window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }
-  }, [roomId, getPlayerNames, leaveRoom, navigate, userId]);
+  }, [roomId, getPlayerNames, navigate]);
 
   const handleLeaveRoom = async () => {
     try {
-      socket.emit('leave_room', roomId);
       await leaveRoom({
         roomId,
         userId,
       });
+      socket.emit('leave_room', roomId);
       navigate('/', { replace: true });
     } catch (error) {
       console.error('Error leaving room:', error);
