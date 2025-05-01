@@ -77,9 +77,13 @@ const GamePage = () => {
             <div className="flex flex-col gap-2">
               <textarea
                 className="w-full h-40 p-4 pt-6 border-2 border-gray-300 rounded-lg resize-none focus:border-blue-500 focus:outline-none"
-                placeholder={`Type here...`}
+                placeholder={`${
+                  player.userId !== userId ? "Warten auf antwort" : "Hier schreiben"
+                }`}
                 disabled={player.userId !== userId || hasSubmitted}
-                value={player.userId === userId ? answer : ""}
+                value={player.userId === userId ? answer : room?.gameState === "voting" 
+                  ? room?.submissions?.find(sub => sub.userId === player.userId)?.word || ""
+                  : ""}
                 onChange={(e) => handleTextChange(e.target.value)}
               />
               {player.userId === userId && room?.gameState !== "voting" && (
