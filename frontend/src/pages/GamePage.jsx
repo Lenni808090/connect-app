@@ -94,55 +94,79 @@ const GamePage = () => {
   };
 
   return (
-    <div className="min-h-screen p-8 bg-gray-100">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div>{room?.currentCategory}</div>
-        <div>{room?.gameState === "voting" ? "voting" : "nix voting"}</div>
-        <div>{room?.currentScore}</div>
-        {players.map((player) => (
-          <div key={player.userId} className="relative">
-            <div className="absolute -top-3 left-2 bg-blue-500 text-white px-3 py-1 rounded-full text-sm z-10">
-              {player.username}
-            </div>
-            <div className="flex flex-col gap-2">
-              <textarea
-                className="w-full h-40 p-4 pt-6 border-2 border-gray-300 rounded-lg resize-none focus:border-blue-500 focus:outline-none"
-                placeholder={`${
-                  player.userId !== userId ? "Warten auf antwort" : "Hier schreiben"
-                }`}
-                disabled={player.userId !== userId || hasSubmitted}
-                value={player.userId === userId ? answer : room?.gameState === "voting" 
-                  ? room?.submissions?.find(sub => sub.userId === player.userId)?.word || ""
-                  : ""}
-                onChange={(e) => handleTextChange(e.target.value)}
-              />
-              {player.userId === userId && room?.gameState !== "voting" && (
-                <button
-                  onClick={handleSubmit}
-                  disabled={hasSubmitted}
-                  className={`${
-                    hasSubmitted
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-500 hover:bg-blue-600"
-                  } text-white px-4 py-2 rounded-lg transition-colors`}
-                >
-                  Submit Answer
-                </button>
-              )}
-            </div>
+    <div className="min-h-screen p-8 bg-base-200 transition-all duration-300">
+      <div className="container mx-auto">
+        <div className="stats shadow mb-8 w-full animate-fadeIn">
+          <div className="stat transition-all duration-300 hover:bg-base-200">
+            <div className="stat-title">Aktuelle Kategorie</div>
+            <div className="stat-value text-primary animate-pulse">{room?.currentCategory}</div>
           </div>
-        ))}
+          <div className="stat transition-all duration-300 hover:bg-base-200">
+            <div className="stat-title">Spielstatus</div>
+            <div className="stat-value">{room?.gameState === "voting" ? "Abstimmung" : "Spielphase"}</div>
+          </div>
+          <div className="stat transition-all duration-300 hover:bg-base-200">
+            <div className="stat-title">Punktestand</div>
+            <div className="stat-value text-secondary">{room?.currentScore}</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {players.map((player, index) => (
+            <div 
+              key={player.userId} 
+              className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              style={{
+                animation: `fadeInSlide 0.5s ease-out ${index * 0.1}s both`
+              }}
+            >
+              <div className="card-body">
+                <h2 className="card-title">
+                  {player.username}
+                  {player.isHost && (
+                    <div className="badge badge-primary animate-bounce">Host</div>
+                  )}
+                </h2>
+                <textarea
+                  className="textarea textarea-bordered h-40 w-full resize-none transition-all duration-300 focus:ring-2 focus:ring-primary"
+                  placeholder={`${
+                    player.userId !== userId ? "Warten auf Antwort" : "Hier schreiben"
+                  }`}
+                  disabled={player.userId !== userId || hasSubmitted}
+                  value={player.userId === userId ? answer : room?.gameState === "voting" 
+                    ? room?.submissions?.find(sub => sub.userId === player.userId)?.word || ""
+                    : ""}
+                  onChange={(e) => handleTextChange(e.target.value)}
+                />
+                {player.userId === userId && room?.gameState !== "voting" && (
+                  <button
+                    onClick={handleSubmit}
+                    disabled={hasSubmitted}
+                    className={`btn ${
+                      hasSubmitted
+                        ? "btn-disabled"
+                        : "btn-primary"
+                    } transition-all duration-300 transform hover:scale-105 active:scale-95`}
+                  >
+                    Antwort abschicken
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
         {isHost && room?.gameState === "voting" && (
-          <div className="flex gap-2">
+          <div className="flex gap-4 mt-8 animate-slideUp">
             <button
               onClick={handleAcceptVotes}
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors flex-1"
+              className="btn btn-success flex-1 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               Akzeptieren
             </button>
             <button
               onClick={handleRejectVotes}
-              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex-1"
+              className="btn btn-error flex-1 transition-all duration-300 transform hover:scale-105 active:scale-95"
             >
               Ablehnen
             </button>

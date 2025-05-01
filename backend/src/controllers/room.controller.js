@@ -11,7 +11,7 @@ export const createRoom = async (req, res) => {
         error: "Username and userId are required",
       });
     }
-
+    
     const roomId = createRoomId();
     const room = new Room({
       roomId,
@@ -22,6 +22,7 @@ export const createRoom = async (req, res) => {
           isHost: true,
         },
       ],
+      categories: ["Tiere", "Essen", "Städte", "Berufe", "Sport"],
     });
 
     await room.save();

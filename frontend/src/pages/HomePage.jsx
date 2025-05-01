@@ -44,43 +44,45 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-6 text-center">Willkommen!</h1>
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
+      <div className="card w-96 bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-fadeIn">
+        <div className="card-body">
+          <h1 className="card-title text-2xl font-bold text-center mb-6 animate-pulse">Willkommen!</h1>
 
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Dein Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-
-          <div className="flex flex-col gap-4">
-            <button
-              onClick={handleCreateRoom}
-              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-            >
-              Neuen Raum erstellen
-            </button>
-
-            <div className="text-center">oder</div>
-
+          <div className="space-y-4">
             <input
               type="text"
-              placeholder="Room ID eingeben"
-              value={inputRoomId}
-              onChange={(e) => setInputRoomId(e.target.value)}
-              className="w-full p-2 border rounded"
+              placeholder="Dein Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="input input-bordered w-full transition-all duration-300 focus:ring-2 focus:ring-primary"
             />
 
-            <button
-              onClick={handleJoinRoom}
-              className="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600"
-            >
-              Raum beitreten
-            </button>
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={handleCreateRoom}
+                className="btn btn-primary w-full transition-all duration-300 transform hover:scale-105 active:scale-95"
+              >
+                Neuen Raum erstellen
+              </button>
+
+              <div className="divider">oder</div>
+
+              <input
+                type="text"
+                placeholder="Room ID eingeben"
+                value={inputRoomId}
+                onChange={(e) => setInputRoomId(e.target.value)}
+                className="input input-bordered w-full transition-all duration-300 focus:ring-2 focus:ring-primary"
+              />
+
+              <button
+                onClick={handleJoinRoom}
+                className="btn btn-secondary w-full transition-all duration-300 transform hover:scale-105 active:scale-95"
+              >
+                Raum beitreten
+              </button>
+            </div>
           </div>
         </div>
       </div>
