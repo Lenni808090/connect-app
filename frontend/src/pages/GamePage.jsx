@@ -13,6 +13,7 @@ const GamePage = () => {
     submitWord,
     checkIfHost,
     isHost,
+    voting
   } = useRoomStore();
   const userId = localStorage.getItem("userId");
   const [answer, setAnswer] = useState("");
@@ -55,13 +56,21 @@ const GamePage = () => {
   };
 
   const handleAcceptVotes = () => {
-    // TODO: Implementiere die Logik für das Akzeptieren der Stimmen
-    console.log("Votes accepted");
+    const decision = {
+      roomId: roomId,
+      decision: true,
+    }
+
+    voting(decision);
   };
 
   const handleRejectVotes = () => {
-    // TODO: Implementiere die Logik für das Ablehnen der Stimmen
-    console.log("Votes rejected");
+    const decision = {
+      roomId: roomId,
+      decision: false,
+    }
+
+    voting(decision);
   };
 
   return (
@@ -69,6 +78,7 @@ const GamePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div>{room?.currentCategory}</div>
         <div>{room?.gameState === "voting" ? "voting" : "nix voting"}</div>
+        <div>{room?.currentScore}</div>
         {players.map((player) => (
           <div key={player.userId} className="relative">
             <div className="absolute -top-3 left-2 bg-blue-500 text-white px-3 py-1 rounded-full text-sm z-10">

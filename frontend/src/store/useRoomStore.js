@@ -81,6 +81,15 @@ export const useRoomStore = create((set) => ({
     } catch (error) {
       console.error("Failed to check if Host:", error);
     }
-  }
+  },
 
+  voting: async (data) =>{
+    try {
+      const res = await axiosInstance.post(`/rooms/voting`, data);
+      console.log("lol")
+      set({room: res.data.room})
+    } catch (error) {
+      console.error("Failed to vote:", error);
+    }
+  }
 }));

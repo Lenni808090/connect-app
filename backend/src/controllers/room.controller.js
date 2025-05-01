@@ -201,7 +201,7 @@ export const submitWord = async (req, res) => {
   }
 };
 
-export const endRound = async (req, res) => {
+export const voting = async (req, res) => {
   try {
     const { roomId, decision } = req.body;
 
@@ -220,8 +220,9 @@ export const endRound = async (req, res) => {
       room.currentScore = 0;
     }
 
-    // Spielstatus aktualisieren
-    room.gameState = "finished";
+    if(room.currentScore === 5){
+      room.gameState = "finished"
+    }
 
     await room.save();
 
