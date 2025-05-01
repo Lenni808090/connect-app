@@ -64,8 +64,13 @@ const GamePage = () => {
   };
 
   const handleSubmit = () => {
+    if (players.length < 2) {
+      alert("Das Spiel kann nur mit mindestens 2 Spielern gestartet werden.");
+      return;
+    }
+
     if (!answer.trim()) {
-      alert("Please enter a word before submitting");
+      alert("Bitte geben Sie ein Wort ein, bevor Sie abschicken.");
       return;
     }
     const word = answer.trim();
