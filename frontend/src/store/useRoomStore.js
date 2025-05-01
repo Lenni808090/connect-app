@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 export const useRoomStore = create((set) => ({
   players: [],
   success: [],
+  room: null,
   roomId: null,
 
   getPlayerNames: async (data) => {
@@ -38,8 +39,29 @@ export const useRoomStore = create((set) => ({
     try {
       await axiosInstance.post("/rooms/leaveRoom", data);
       set({ roomId: null });
+      set({ room: null });
     } catch (error) {
       console.error("Fehler beim leaven des Raums:", error);
     }
   },
+
+  startGame: async (data) => {
+    try {
+      const res = await axiosInstance.post("/rooms/startGame", data);
+      set({ success: res.data.success });
+      set({ roomId: res.data.room.roomId });
+    } catch (error) {
+      console.error("Fehler beim starten des Spieles:", error);
+    }
+  },
+
+  getRoom: async (data) => {
+    try {
+      const res = await axiosInstance.get(`/rooms/GetRoom/${data}`);
+      set({ room: res.data });
+    } catch (error) {
+      console.error("Failed to fetch room:", error);
+    }
+  },
+
 }));
