@@ -11,11 +11,11 @@ import { app, server } from "./lib/socket.js";
 dotenv.config();
 
 const PORT = process.env.PORT;
-
+const Client_Url = process.env.Client_Url
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: Client_Url,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add this line
     allowedHeaders: ['Content-Type', 'Authorization'], // Add this line
