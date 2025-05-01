@@ -13,8 +13,17 @@ const io = new Server(server, {
     }
 });
 
+// Map zur Speicherung der Socket.ID zu UUID Zuordnung
+const socketToUserMap = new Map();
+
 io.on("connection", (socket) => {
     console.log("a user connected", socket.id);
+
+    // Neuer Event-Handler für die Zuordnung von Socket.ID zu UUID
+    socket.on("register_user", (userId) => {
+        socketToUserMap.set(socket.id, userId);
+        console.log(`User ${userId} registered with socket ${socket.id}`);
+    });
 
     socket.on("join_room", async (roomId) => {
         socket.join(roomId);
@@ -73,8 +82,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
+        // Beim Disconnect die Zuordnung entfernen
+        socketToUserMap.delete(socket.id);
         console.log("user disconnected");
     });
 });
+
+// Hilfsfunktion zum Abrufen der UUID
+export const getUserId = (socketId) => {
+    return socketToUserMap.get(socketId);
+};
 
 export { io, server, app };

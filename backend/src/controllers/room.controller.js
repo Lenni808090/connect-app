@@ -3,12 +3,12 @@ import { createRoomId } from "../utils/generateRoomId.js";
 
 export const createRoom = async (req, res) => {
   try {
-    const { username, socketId } = req.body;
+    const { username, userId } = req.body;
 
-    if (!username || !socketId) {
+    if (!username || !userId) {
       return res.status(400).json({
         success: false,
-        error: "Username and socketId are required",
+        error: "Username and userId are required",
       });
     }
 
@@ -18,7 +18,7 @@ export const createRoom = async (req, res) => {
       players: [
         {
           username,
-          socketId,
+          userId,
           isHost: true,
         },
       ],
@@ -37,7 +37,7 @@ export const createRoom = async (req, res) => {
 
 export const joinRoom = async (req, res) => {
   try {
-    const { roomId, username, socketId } = req.body;
+    const { roomId, username, userId } = req.body;
 
     const room = await Room.findOne({ roomId });
 
@@ -50,7 +50,7 @@ export const joinRoom = async (req, res) => {
 
     const newPlayer = {
       username,
-      socketId,
+      userId,
       isHost: room.players.length === 0,
     };
 
@@ -69,14 +69,14 @@ export const joinRoom = async (req, res) => {
 
 export const leaveRoom = async (req, res) => {
   try {
-    const { roomId, socketId } = req.body;
+    const { roomId, userId } = req.body;
     const room = await Room.findOne({ roomId });
 
     if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
 
-    room.players = room.players.filter((ply) => ply.socketId !== socketId);
+    room.players = room.players.filter((ply) => ply.userId !== userId);
 
     await room.save();
 
@@ -158,7 +158,7 @@ export const startGame = async (req, res) => {
 
 export const submitWord = async (req, res) => {
   try {
-    const { roomId, socketId, word } = req.body;
+    const { roomId, userId, word } = req.body;
 
     const room = await Room.findOne({ roomId });
 
@@ -177,12 +177,12 @@ export const submitWord = async (req, res) => {
     }
 
     const existingSubmission = room.submissions.find(
-      (sub) => sub.socketId === socketId
+      (sub) => sub.userId === userId
     );
     if (existingSubmission) {
       existingSubmission.word = word;
     } else {
-      room.submissions.push({ socketId, word });
+      room.submissions.push({ userId, word });
     }
 
     if (room.submissions.length === room.players.length) {

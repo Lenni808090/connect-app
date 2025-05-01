@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import socket from "../utils/socket";
 import { useRoomStore } from "../store/useRoomStore.js";
-import { useEffect } from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const HomePage = () => {
   const [username, setUsername] = useState("");
@@ -15,6 +15,10 @@ const HomePage = () => {
       socket.emit("join_room", roomId);
       navigate(`/lobby/${roomId}`);
     }
+    // Beim ersten Laden eine UUID generieren und speichern
+    if (!localStorage.getItem('userId')) {
+      localStorage.setItem('userId', uuidv4());
+    }
   }, [success, roomId, navigate]);
 
   const handleCreateRoom = async () => {
@@ -22,7 +26,8 @@ const HomePage = () => {
       alert("Bitte geben Sie einen Benutzernamen ein");
       return;
     }
-    await createRoom({ username, socketId: socket.id });
+    const userId = localStorage.getItem('userId');
+    await createRoom({ username, userId });
   };
 
   const handleJoinRoom = async () => {
@@ -30,14 +35,12 @@ const HomePage = () => {
       alert("Bitte geben Sie einen Benutzernamen und eine Room-ID ein");
       return;
     }
-
+    const userId = localStorage.getItem('userId');
     await joinRoom({
       username,
       roomId: inputRoomId,
-      socketId: socket.id,
+      userId,
     });
-
-    
   };
 
   return (

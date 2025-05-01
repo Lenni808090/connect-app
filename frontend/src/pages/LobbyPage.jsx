@@ -10,7 +10,9 @@ const LobbyPage = () => {
   const [copySuccess, setCopySuccess] = useState('');
   
   // Find if current player is host
-  const currentPlayer = players.find(player => player.socketId === socket.id);
+  // Ändern Sie die currentPlayer Logik
+  const userId = localStorage.getItem('userId');
+  const currentPlayer = players.find(player => player.userId === userId);
   const isHost = currentPlayer?.isHost || false;
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const LobbyPage = () => {
         socket.emit('leave_room', roomId);
         await leaveRoom({
           roomId,
-          socketId: socket.id,
+          userId,
         });
       };
 
@@ -55,7 +57,7 @@ const LobbyPage = () => {
       socket.emit('leave_room', roomId);
       await leaveRoom({
         roomId,
-        socketId: socket.id,
+        userId,
       });
       navigate('/', { replace: true });
     } catch (error) {
@@ -100,7 +102,7 @@ const LobbyPage = () => {
           <ul className="space-y-2">
             {players.map((player) => (
               <li 
-                key={player.socketId}
+                key={player.userId}
                 className="p-2 bg-gray-50 rounded flex items-center"
               >
                 <span className="flex-1">{player.username}</span>

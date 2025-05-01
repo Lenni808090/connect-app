@@ -25,7 +25,7 @@ const roomSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        socketId: {
+        userId: {
             type: String,
             required: true,
         },
@@ -47,7 +47,7 @@ const roomSchema = new mongoose.Schema(
     },
 
     submissions: [{
-        socketId: {
+        userId: {
             type: String,
             required: true,
         },
