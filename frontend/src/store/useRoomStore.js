@@ -3,6 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 export const useRoomStore = create((set) => ({
   players: [],
   success: [],
+  isHost: null,
   room: null,
   roomId: null,
 
@@ -63,5 +64,23 @@ export const useRoomStore = create((set) => ({
       console.error("Failed to fetch room:", error);
     }
   },
+
+  submitWord: async (data) => {
+    try {
+      const res = await axiosInstance.post(`/rooms/submitWord`, data);
+      set({room: res.data.room})
+    } catch (error) {
+      console.error("Failed to submit word:", error);
+    }
+  },
+
+  checkIfHost: async (roomId, userId) => {
+    try {
+      const res = await axiosInstance.get(`/rooms/checkifHost/${roomId}/user/${userId}`);
+      set({isHost: res.data.isHost})
+    } catch (error) {
+      console.error("Failed to check if Host:", error);
+    }
+  }
 
 }));

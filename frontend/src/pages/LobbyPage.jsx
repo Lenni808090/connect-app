@@ -5,12 +5,11 @@ import socket from '../utils/socket';
 
 const LobbyPage = () => {
   const { roomId } = useParams();
-  const { players, getPlayerNames, leaveRoom } = useRoomStore();
+  const { players, getPlayerNames, leaveRoom , startGame} = useRoomStore();
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState('');
   
-  // Find if current player is host
-  // Ändern Sie die currentPlayer Logik
+
   const userId = localStorage.getItem('userId');
   const currentPlayer = players.find(player => player.userId === userId);
   const isHost = currentPlayer?.isHost || false;
@@ -50,7 +49,7 @@ const LobbyPage = () => {
         window.removeEventListener('beforeunload', handleBeforeUnload);
       };
     }
-  }, [roomId, getPlayerNames, leaveRoom, navigate]);
+  }, [roomId, getPlayerNames, leaveRoom, navigate, userId]);
 
   const handleLeaveRoom = async () => {
     try {
@@ -68,7 +67,7 @@ const LobbyPage = () => {
   const handleStartGame = () => {
     if (isHost) {
       socket.emit('start_game', roomId);
-      
+      startGame({roomId});
     }
   };
 

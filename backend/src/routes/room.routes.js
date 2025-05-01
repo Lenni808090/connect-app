@@ -9,7 +9,7 @@ router.post("/setCategories", setCategories);
 router.post("/startGame", startGame);
 router.post("/submitWord", submitWord);
 router.post("/endRound", endRound);
-router.post("/checkifHost", checkifHost);
+router.get("/checkifHost/:roomId/user/:userId", checkifHost);
 
 router.get("/getRoom/:roomId", getRoom)
 export default router;

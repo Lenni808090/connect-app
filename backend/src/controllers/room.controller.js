@@ -239,7 +239,7 @@ export const endRound = async (req, res) => {
 
 export const checkifHost = async (req, res) => {
   try {
-    const { roomId, socketId } = req.body;
+    const { roomId, userId } = req.params;
 
     const room = await Room.findOne({ roomId });
 
@@ -250,7 +250,7 @@ export const checkifHost = async (req, res) => {
       });
     }
 
-    const player = room.players.find((ply) => ply.socketId === socketId);
+    const player = room.players.find((ply) => ply.userId === userId);
 
     if (!player) {
       return res.status(404).json({
