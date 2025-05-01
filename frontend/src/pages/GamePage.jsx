@@ -42,8 +42,6 @@ const GamePage = () => {
         setHasSubmitted(localStorage.getItem(`submitted_${roomId}_${userId}`) === "true");
       });
 
-
-
       socket.on("round_started", () => {
         getRoom(roomId);
         setHasSubmitted(false);
