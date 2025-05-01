@@ -30,6 +30,10 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on("word_submitted", (roomId) => {
+    io.to(roomId).emit("update_submissions", { roomId });
+  });
+
   socket.on("start_game", async (roomId) => {
     console.log("Game started in room", roomId);
     io.to(roomId).emit("game_started", { roomId });

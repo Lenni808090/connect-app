@@ -6,7 +6,7 @@ router.post("/createRoom", createRoom);
 router.post("/joinRoom", joinRoom);
 router.post("/leaveRoom", leaveRoom);
 router.post("/setCategories", setCategories);
-router.post("/setScoreLimits", setScoreLimit);
+router.post("/setScoreLimit", setScoreLimit);
 router.post("/startGame", startGame);
 router.post("/submitWord", submitWord);
 router.post("/voting", voting);

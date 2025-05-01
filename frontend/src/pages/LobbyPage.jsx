@@ -5,7 +5,7 @@ import socket from '../utils/socket';
 
 const LobbyPage = () => {
   const { roomId } = useParams();
-  const { players, getPlayerNames, leaveRoom, startGame, setCategories } = useRoomStore();
+  const { players, getPlayerNames, leaveRoom, startGame, setCategories, setScoreLimit: setScoreLimitStore } = useRoomStore();
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState('');
   const [scoreLimit, setScoreLimit] = useState(5);
@@ -82,7 +82,7 @@ const LobbyPage = () => {
         });
       }
       
-      setScoreLimit({
+      setScoreLimitStore({
         roomId,
         scoreLimit: parseInt(scoreLimit)
       });
@@ -94,10 +94,10 @@ const LobbyPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
-      <div className="card w-[800px] bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-fadeIn">
+      <div className={`card ${isHost ? 'w-[800px]' : 'w-[400px]'} bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 animate-fadeIn`}>
         <div className="card-body">
           <h2 className="card-title text-2xl font-bold text-center mb-6 animate-pulse">Lobby</h2>
-          <div className="grid grid-cols-2 gap-6">
+          <div className={`grid ${isHost ? 'grid-cols-2' : 'grid-cols-1'} gap-6`}>
             <div className="space-y-4">
               <div className="flex items-center justify-between transition-all duration-300">
                 <h3 className="text-xl font-semibold">Room ID: {roomId}</h3>

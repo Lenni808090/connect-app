@@ -18,9 +18,17 @@ const GamePage = () => {
   } = useRoomStore();
   const userId = localStorage.getItem("userId");
   const [answer, setAnswer] = useState("");
+  const [showWinAnimation, setShowWinAnimation] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(() => {
     return localStorage.getItem(`submitted_${roomId}_${userId}`) === "true";
   });
+
+  useEffect(() => {
+    if (room?.currentScore >= room?.scoreLimit) {
+      setShowWinAnimation(true);
+      setTimeout(() => setShowWinAnimation(false), 5000); // Animation nach 5 Sekunden ausblenden
+    }
+  }, [room?.currentScore, room?.scoreLimit]);
 
   useEffect(() => {
     if (roomId) {
@@ -34,19 +42,22 @@ const GamePage = () => {
         setHasSubmitted(localStorage.getItem(`submitted_${roomId}_${userId}`) === "true");
       });
 
+
+
       socket.on("round_started", () => {
         getRoom(roomId);
         setHasSubmitted(false);
         localStorage.setItem(`submitted_${roomId}_${userId}`, "false");
-        setAnswer("")
+        setAnswer("");
       });
 
       return () => {
-        socket.off("player_joined");
         socket.off("player_left");
+        socket.off("update_submissions");
+        socket.off("round_started");
       };
     }
-  }, [roomId, getPlayerNames, getRoom, room, userId, checkIfHost]);
+  }, [roomId, userId, getPlayerNames, getRoom, checkIfHost, room?.submissions]);
 
   const handleTextChange = (value) => {
     if (!hasSubmitted) {
@@ -95,6 +106,19 @@ const GamePage = () => {
 
   return (
     <div className="min-h-screen p-8 bg-base-200 transition-all duration-300">
+      {showWinAnimation && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="text-center animate-bounce">
+            <h1 className="text-6xl font-bold text-primary mb-4 animate-pulse">
+              🎉 Gewonnen! 🎉
+            </h1>
+            <p className="text-2xl text-white">
+              Herzlichen Glückwunsch! Ihr habt das Spiel gewonnen!
+            </p>
+          </div>
+        </div>
+      )}
+      
       <div className="container mx-auto">
         <div className="stats shadow mb-8 w-full animate-fadeIn">
           <div className="stat transition-all duration-300 hover:bg-base-200">
@@ -107,7 +131,7 @@ const GamePage = () => {
           </div>
           <div className="stat transition-all duration-300 hover:bg-base-200">
             <div className="stat-title">Punktestand</div>
-            <div className="stat-value text-secondary">{room?.currentScore}</div>
+            <div className="stat-value text-secondary">{room?.currentScore}/{room?.scoreLimit}</div>
           </div>
         </div>
 

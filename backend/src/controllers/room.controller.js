@@ -269,10 +269,6 @@ export const voting = async (req, res) => {
       room.currentScore = 0;
     }
 
-    if(room.currentScore === room.scoreLimit){
-      room.gameState = "finished"
-    }
-
     await room.save();
 
     res.status(200).json({
