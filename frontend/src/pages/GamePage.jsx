@@ -57,7 +57,7 @@ const GamePage = () => {
         socket.off("round_started");
       };
     }
-  }, [roomId, userId, getPlayerNames, getRoom, checkIfHost, room?.submissions]);
+  }, [roomId, userId, getPlayerNames, getRoom, checkIfHost, room]);
 
   const handleTextChange = (value) => {
     if (!hasSubmitted) {
