@@ -14,13 +14,21 @@ const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add this line
-    allowedHeaders: ['Content-Type', 'Authorization'], // Add this line
-}));
 
+if (process.env.NODE_ENV !== "production") {
+    dotenv.config({
+      path: "./config/.env",
+    });
+  }
+  
+  const corsConfig = {
+    origin: process.env.Client_URL,
+    credentials: true,
+    method: ["GET", "POST", "PUT", "DELETE"],
+  };
+  
+  app.options("", cors(corsConfig));
+  app.use(cors(corsConfig));
 
 
 server.listen(PORT, () => {
