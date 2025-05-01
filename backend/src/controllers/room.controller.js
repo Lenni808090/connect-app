@@ -22,7 +22,29 @@ export const createRoom = async (req, res) => {
           isHost: true,
         },
       ],
-      categories: ["Tiere", "Essen", "Städte", "Berufe", "Sport"],
+      categories: [
+        "Tiere", "Essen", "Städte", "Berufe", "Sport", "Länder", "Pflanzen", "Musik", "Filme", "Serien",
+        "Automarken", "Farben", "Kleidung", "Möbel", "Werkzeuge", "Gefühle", "Wetter", "Sprachen", "Instrumente", "Feiertage",
+        "Kontinente", "Getränke", "Süßigkeiten", "Meereslebewesen", "Vögel", "Reptilien", "Insekten", "Haustiere", "Wildtiere", "Marken",
+        "Technik", "Berühmte Persönlichkeiten", "Schauspieler", "Sänger", "Tänze", "Computerspiele", "Brettspiele", "Länderhauptstädte", "Sehenswürdigkeiten", "Religionen",
+        "Mythen", "Märchen", "Superhelden", "Schurken", "Bücher", "Autoren", "Universitäten", "Schulgegenstände", "Verkehrsmittel", "Kontosysteme",
+        "Berühmte Gemälde", "Künstler", "Musikgenres", "Filmgenres", "Naturkatastrophen", "Berge", "Flüsse", "Seen", "Meere", "Körperteile",
+        "Krankheiten", "Medikamente", "Chemikalien", "Elemente", "Planeten", "Sternbilder", "Raumfahrt", "Berühmte Reden", "Politiker", "Kriege",
+        "Historische Ereignisse", "Erfindungen", "Architekturstile", "Gebäudearten", "Zeitungen", "Magazine", "TV-Sender", "Radiosender", "Programmiersprachen", "Software",
+        "Apps", "Soziale Netzwerke", "Spielekonsolen", "Spielzeuge", "Haushaltsgeräte", "Gartenpflanzen", "Bäume", "Blumen", "Pilze", "Fische",
+        "Amphibien", "Dinosaurier", "Fantasy-Wesen", "Science-Fiction-Begriffe", "Spukorte", "Monster", "Zaubersprüche", "Waffenarten", "Rüstungen", "Materialien",
+        "Stoffe", "Textilien", "Wohnräume", "Dekoration", "Architekten", "Dichter", "Philosophen", "Psychologen", "Physiker", "Chemiker",
+        "Mathematiker", "Biologen", "Astronomen", "Computersysteme", "Datenformate", "Dateiendungen", "Programmbefehle", "Betriebssysteme", "Open-Source-Projekte", "YouTuber",
+        "Twitch-Streamer", "TikTok-Trends", "Internet-Memes", "Mode-Trends", "Epochen", "Götter", "Religionen", "Tempel", "Festungen", "Schlösser",
+        "Länderflaggen", "Autos", "Motorräder", "LKWs", "Flugzeuge", "Flughäfen", "Zugtypen", "Schiffstypen", "Segelboote", "Sportarten",
+        "Olympische Disziplinen", "Mannschaftssport", "Extremsport", "Kampfsport", "Tanzstile", "Yoga-Übungen", "Fitnessgeräte", "Diäten", "Vitamine", "Mineralstoffe",
+        "Fast-Food-Ketten", "Restaurants", "Kochtechniken", "Küchenarten", "Backwaren", "Suppen", "Soßen", "Obst", "Gemüse", "Getreide",
+        "Nüsse", "Gewürze", "Kräuter", "Öle", "Milchprodukte", "Fleischsorten", "Fische & Meeresfrüchte", "Alkoholsorten", "Cocktails", "Teearten",
+        "Kaffeesorten", "Eissorten", "Comics", "Manga", "Anime", "Cartoons", "Spieleentwickler", "Game Engines", "Tools", "Code-Editoren",
+        "Lernplattformen", "Hobbys", "DIY-Projekte", "Bastelmaterialien", "Musikinstrumente", "Tonarten", "Akkorde", "Lieder", "Songtexte", "Filmzitate",
+        "Redewendungen", "Sprichwörter", "Emojis", "Internet-Abkürzungen", "Sprachen der Welt", "Dialekte", "Zeichensysteme", "Typografien", "Schriftarten", "Emo-Stile"
+      ],
+      
     });
 
     await room.save();
@@ -300,8 +322,7 @@ export const nextRound = async (req, res) => {
       });
     }
 
-    const categories = ["Tiere", "Essen", "Städte", "Berufe", "Sport"];
-    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    const randomCategory = room.categories[Math.floor(Math.random() * room.categories.length)];
 
     room.submissions = [];
     room.gameState = "playing";
