@@ -91,5 +91,15 @@ export const useRoomStore = create((set) => ({
     } catch (error) {
       console.error("Failed to vote:", error);
     }
+  },
+
+  nextRound: async (data) => {
+    try {
+      const res = await axiosInstance.post(`/rooms/nextRound`, data);
+      set({room: res.data.room})
+    } catch (error) {
+      console.error("Failed to start next Round", error);
+    }
   }
+  
 }));

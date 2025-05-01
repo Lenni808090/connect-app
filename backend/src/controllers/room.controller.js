@@ -285,3 +285,36 @@ export const getRoom = async (req, res) => {
     res.status(500).json({ error: "Interner Server Fehler" });
   }
 };
+
+export const nextRound = async (req, res) => {
+  try {
+    const { roomId } = req.body;
+
+    const room = await Room.findOne({ roomId });
+
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        error: "Raum nicht gefunden",
+      });
+    }
+
+    const categories = ["Tiere", "Essen", "Städte", "Berufe", "Sport"];
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+
+    room.submissions = [];
+    room.gameState = "playing";
+    room.currentCategory = randomCategory;
+    room.round += 1;
+
+    await room.save();
+
+    res.status(200).json({
+      success: true,
+      room: room,
+    });
+  } catch (error) {
+    console.log("Fehler beim Starten der nächsten Runde:", error);
+    res.status(500).json({ error: "Interner Server Fehler" });
+  }
+};

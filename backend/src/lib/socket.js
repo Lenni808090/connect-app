@@ -51,6 +51,24 @@ io.on("connection", (socket) => {
         }
     });
 
+    socket.on("next_round", async (roomId) => {
+        console.log("next round started in room", roomId);
+        // Benachrichtige alle Spieler im Raum, dass das Spiel gestartet wurde
+        io.to(roomId).emit('round_started', { roomId });
+        
+        const room = await Room.findOne({ roomId });
+        if (room) {
+            io.to(roomId).emit('game_update', {
+                gameState: room.gameState,
+                currentCategory: room.currentCategory,
+                submissions: room.submissions,
+                currentScore: room.currentScore,
+                round: room.round
+            });
+        }
+    });
+
+
     socket.on("word_submitted", async ({ roomId }) => {
         const room = await Room.findOne({ roomId });
         if (room) {

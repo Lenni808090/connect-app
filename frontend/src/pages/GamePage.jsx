@@ -13,7 +13,8 @@ const GamePage = () => {
     submitWord,
     checkIfHost,
     isHost,
-    voting
+    voting,
+    nextRound
   } = useRoomStore();
   const userId = localStorage.getItem("userId");
   const [answer, setAnswer] = useState("");
@@ -25,10 +26,19 @@ const GamePage = () => {
     if (roomId) {
       getRoom(roomId);
       getPlayerNames(roomId);
-      checkIfHost(roomId, userId); // Korrekter Aufruf mit beiden Parametern
+      checkIfHost(roomId, userId);
 
       socket.on("player_left", () => {
         getPlayerNames(roomId);
+        localStorage.setItem(`submitted_${roomId}_${userId}`, "false");
+        setHasSubmitted(localStorage.getItem(`submitted_${roomId}_${userId}`) === "true");
+      });
+
+      socket.on("round_started", () => {
+        getRoom(roomId);
+        setHasSubmitted(false);
+        localStorage.setItem(`submitted_${roomId}_${userId}`, "false");
+        setAnswer("")
       });
 
       return () => {
@@ -62,6 +72,11 @@ const GamePage = () => {
     }
 
     voting(decision);
+    nextRound({roomId});
+    setAnswer("")
+    setHasSubmitted(false);
+    localStorage.setItem(`submitted_${roomId}_${userId}`, "false");
+    socket.emit('next_round', roomId);
   };
 
   const handleRejectVotes = () => {
@@ -71,6 +86,11 @@ const GamePage = () => {
     }
 
     voting(decision);
+    nextRound({roomId});
+    setAnswer("")
+    setHasSubmitted(false);
+    localStorage.setItem(`submitted_${roomId}_${userId}`, "false");
+    socket.emit('next_round', roomId);
   };
 
   return (
