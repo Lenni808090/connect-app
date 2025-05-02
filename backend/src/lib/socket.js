@@ -1,9 +1,18 @@
 import { Server } from "socket.io";
 import http from "http";
 import express from "express";
+import cors from "cors"; // Add this import
 import Room from "../models/room.model.js";
 
 const app = express();
+
+// Add CORS middleware to Express
+app.use(cors({
+  origin: "*", // Or specify your frontend URL: "https://connect-app-khaki.vercel.app"
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true
+}));
+
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
