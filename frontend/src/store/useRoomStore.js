@@ -120,4 +120,20 @@ export const useRoomStore = create((set) => ({
     }
   },
 
+  deleteRoom: async (roomId) => {
+    try {
+      await axiosInstance.delete(`/rooms/deleteRoom/${roomId}`);
+      // Optional: Zustand nach erfolgreichem Löschen zurücksetzen
+      set({ roomId: null, room: null, players: [], isHost: null, success: [] });
+    } catch (error) {
+      console.error("Failed to delete room:", error);
+      // Füge hier ggf. eine Fehlerbehandlung für den Benutzer hinzu
+    }
+  },
+
+  resetRoomState: () => {
+    set({ roomId: null, room: null, players: [], isHost: null, success: [] });
+    // Hier könnten auch weitere spezifische Game-State-Variablen zurückgesetzt werden
+  }
+
 }));

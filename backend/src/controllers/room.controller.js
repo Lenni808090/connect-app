@@ -362,3 +362,30 @@ export const nextRound = async (req, res) => {
     res.status(500).json({ error: "Interner Server Fehler" });
   }
 };
+
+export const deleteRoom = async (req, res) => {
+  try {
+    const { roomId } = req.params; // Raum-ID aus den Routenparametern holen
+
+    const room = await Room.findOne({ roomId });
+
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        error: "Raum nicht gefunden",
+      });
+    }
+
+    // Raum löschen
+    await Room.deleteOne({ roomId });
+
+    res.status(200).json({
+      success: true,
+      message: "Raum erfolgreich gelöscht",
+    });
+
+  } catch (error) {
+    console.log("Fehler beim Löschen des Raums:", error);
+    res.status(500).json({ error: "Interner Server Fehler" });
+  }
+};
