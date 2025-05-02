@@ -11,13 +11,20 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 
-// Configure CORS
-const corsOptions = {
-  origin: "https://connect-app-khaki.vercel.app", // Allow your frontend origin
-  credentials: true, // Allow cookies to be sent with requests (if needed)
-};
+// Configure CORS to allow all origins (USE WITH CAUTION!)
+// This allows requests from any domain.
+// It's generally recommended to specify allowed origins for security.
+app.use(cors({
+  origin: "*", // Allow any origin
+  credentials: true, // Keep this if you need cookies/authorization headers
+}));
 
-app.use(cors(corsOptions)); // Use the cors middleware
+// // Previous specific origin configuration (commented out or removed)
+// const corsOptions = {
+//   origin: "https://connect-app-khaki.vercel.app", // Allow your frontend origin
+//   credentials: true, // Allow cookies to be sent with requests (if needed)
+// };
+// app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
