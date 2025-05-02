@@ -5,7 +5,7 @@ import socket from '../utils/socket';
 
 const LobbyPage = () => {
   const { roomId } = useParams();
-  const { players, getPlayerNames, leaveRoom, startGame, setCategories, setScoreLimit: setScoreLimitStore } = useRoomStore();
+  const { players, getPlayerNames, leaveRoom, startGame, setCategories, setScoreLimit: setScoreLimitStore, room,  getRoom } = useRoomStore();
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState('');
   const [scoreLimit, setScoreLimit] = useState(5);
@@ -56,10 +56,15 @@ const LobbyPage = () => {
 
   const handleStartGame = () => {
     if (isHost) {
+      getRoom(roomId);
+      if(room?.players.length <= 2){
+        alert("Mindestens 2 Spieler werden benötigt!");
+        return;
+      }
       socket.emit('start_game', roomId);
       startGame({roomId});
     }
-  };
+};
 
   const copyRoomIdToClipboard = () => {
     navigator.clipboard.writeText(roomId)

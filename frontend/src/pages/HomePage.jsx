@@ -8,7 +8,7 @@ const HomePage = () => {
   const [username, setUsername] = useState("");
   const [inputRoomId, setInputRoomId] = useState(""); // Korrigierte Benennung
   const navigate = useNavigate();
-  const { createRoom, joinRoom, success, roomId } = useRoomStore();
+  const { createRoom, joinRoom, success, roomId, room, getRoom } = useRoomStore();
 
   useEffect(() => {
     if (success && roomId) {
@@ -33,6 +33,11 @@ const HomePage = () => {
   const handleJoinRoom = async () => {
     if (!username || !inputRoomId) {
       alert("Bitte geben Sie einen Benutzernamen und eine Room-ID ein");
+      return;
+    }
+    getRoom(inputRoomId);
+    if(room?.gameState === "waiting"){
+      alert("Game hat schon gestartet");
       return;
     }
     const userId = localStorage.getItem('userId');

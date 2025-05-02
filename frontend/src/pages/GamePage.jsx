@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useRoomStore } from "../store/useRoomStore";
 import socket from "../utils/socket";
+import '../styles/WinAnimation.css';
 
 const GamePage = () => {
   const { roomId } = useParams();
@@ -22,13 +23,17 @@ const GamePage = () => {
   const [hasSubmitted, setHasSubmitted] = useState(() => {
     return localStorage.getItem(`submitted_${roomId}_${userId}`) === "true";
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (room?.currentScore >= room?.scoreLimit) {
       setShowWinAnimation(true);
-      setTimeout(() => setShowWinAnimation(false), 5000); // Animation nach 5 Sekunden ausblenden
+      setTimeout(() => {
+        setShowWinAnimation(false);
+        navigate('/'); 
+      }, 5000);
     }
-  }, [room?.currentScore, room?.scoreLimit]);
+  }, [room?.currentScore, room?.scoreLimit, navigate]);
 
   useEffect(() => {
     if (roomId) {
@@ -110,14 +115,32 @@ const GamePage = () => {
   return (
     <div className="min-h-screen p-8 bg-base-200 transition-all duration-300">
       {showWinAnimation && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="text-center animate-bounce">
-            <h1 className="text-6xl font-bold text-primary mb-4 animate-pulse">
-              🎉 Gewonnen! 🎉
-            </h1>
-            <p className="text-2xl text-white">
-              Herzlichen Glückwunsch! Ihr habt das Spiel gewonnen!
-            </p>
+        <div className="win-overlay">
+          <div className="relative w-full h-full flex items-center justify-center">
+            <div className="confetti confetti-1">🎊</div>
+            <div className="confetti confetti-2">🎉</div>
+            <div className="confetti confetti-3">🎊</div>
+            <div className="confetti confetti-4">🎉</div>
+            <div className="confetti confetti-5">🎊</div>
+            
+            <div className="win-card">
+              <div className="relative">
+                <h1 className="win-title">
+                  🏆 GEWONNEN! 🏆
+                </h1>
+                <p className="win-subtitle">
+                  Herzlichen Glückwunsch!
+                </p>
+                <p className="win-message">
+                  Ihr habt das Spiel erfolgreich abgeschlossen!
+                </p>
+                
+                <div className="star star-1">⭐</div>
+                <div className="star star-2">⭐</div>
+                <div className="star star-3">⭐</div>
+                <div className="star star-4">⭐</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

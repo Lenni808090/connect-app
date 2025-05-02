@@ -1,0 +1,102 @@
+@keyframes fallAnimation {
+  0% { transform: translateY(-100vh) rotate(0deg); }
+  50% { transform: translateY(0vh) rotate(180deg); }
+  100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+@keyframes flyIn {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+@keyframes spinStar {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.2); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+@keyframes rainbow {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  50% { filter: hue-rotate(180deg) brightness(1.2); }
+  100% { filter: hue-rotate(360deg) brightness(1); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.win-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 50;
+}
+
+.confetti {
+  position: absolute;
+  font-size: 2.5rem;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+}
+
+.confetti-1 { left: 25%; animation: fallAnimation 3s linear infinite; }
+.confetti-2 { left: 50%; animation: fallAnimation 2.5s linear infinite; }
+.confetti-3 { right: 25%; animation: fallAnimation 2s linear infinite; }
+.confetti-4 { right: 33%; animation: fallAnimation 3s linear infinite; }
+.confetti-5 { left: 33%; animation: fallAnimation 2.5s linear infinite; }
+
+.win-card {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: white;
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(40, 167, 69, 0.3);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: flyIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.win-title {
+  font-size: 4.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  text-align: center;
+  animation: rainbow 3s linear infinite;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+.win-subtitle {
+  font-size: 2.25rem;
+  text-align: center;
+  animation: fadeIn 1s ease-out 0.5s forwards;
+  opacity: 0;
+  margin-bottom: 1rem;
+}
+
+.win-message {
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  text-align: center;
+  animation: fadeIn 1s ease-out 1s forwards;
+  opacity: 0;
+}
+
+.star {
+  position: absolute;
+  font-size: 3rem;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+  animation: spinStar 4s linear infinite;
+}
+
+.star-1 { top: -1rem; left: -1rem; }
+.star-2 { top: -1rem; right: -1rem; }
+.star-3 { bottom: -1rem; left: -1rem; }
+.star-4 { bottom: -1rem; right: -1rem; }
