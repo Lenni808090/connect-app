@@ -4,7 +4,7 @@ const isProduction = window.location.hostname !== 'localhost' &&
                      window.location.hostname !== '127.0.0.1';
 
 const socket = io(isProduction
-    ? "https://connect-app-700f.onrender.com"
+    ? "https://connect-app-d495.onrender.com"  // Updated URL
     : "http://localhost:5001", {
   withCredentials: true,
   autoConnect: false,

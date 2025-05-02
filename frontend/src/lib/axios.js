@@ -13,7 +13,7 @@ console.log("Using API URL:", isProduction
 
 export const axiosInstance = axios.create({
     baseURL: isProduction
-        ? "https://connect-app-700f.onrender.com/api" // <-- Add /api here
+        ? "https://connect-app-d495.onrender.com/api"  // Updated URL
         : "http://localhost:5001/api",
     withCredentials: true,
 });
