@@ -10,9 +10,9 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",  // Allows all origins - KEEP THIS for Socket.IO itself
+    origin: "https://connect-app-frontend.onrender.com", // Change wildcard to your specific frontend origin
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    credentials: true
+    credentials: true // Keep this true as your frontend uses it
   },
 });
 
