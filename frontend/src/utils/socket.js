@@ -1,6 +1,10 @@
 import { io } from "socket.io-client";
 
-const socket = io(import.meta.env.NODE_ENV === 'production' 
+
+const isProduction = window.location.hostname !== 'localhost' && 
+                     window.location.hostname !== '127.0.0.1';
+
+const socket = io(isProduction 
     ? "https://connect-app-api.vercel.app" 
     : "http://localhost:5001", {
   withCredentials: true,
