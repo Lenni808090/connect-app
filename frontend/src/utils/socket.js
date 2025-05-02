@@ -4,12 +4,12 @@ const isProduction = window.location.hostname !== 'localhost' &&
                      window.location.hostname !== '127.0.0.1';
 
 // Log connection information for debugging
-console.log("Socket.io connecting to:", isProduction 
-    ? "https://connect-app-api.vercel.app" 
+console.log("Socket.io connecting to:", isProduction
+    ? "https://your-render-backend-url.onrender.com" // <-- CHANGE THIS
     : "http://localhost:5001");
 
-const socket = io(isProduction 
-    ? "https://connect-app-api.vercel.app" 
+const socket = io(isProduction
+    ? "https://your-render-backend-url.onrender.com" // <-- CHANGE THIS
     : "http://localhost:5001", {
   withCredentials: true,
   autoConnect: false,

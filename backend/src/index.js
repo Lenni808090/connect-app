@@ -32,7 +32,7 @@ app.use(cookieParser());
 // API
 app.use("/api/rooms", roomRoutes);
 
-server.listen(PORT, () => {
-    console.log("server is running on PORT:" + PORT);
+server.listen(PORT, '0.0.0.0', () => { // Add '0.0.0.0' here
+    console.log(`Server is running on PORT: ${PORT}`);
     connectDB();
 });
