@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Determine if we're in production by checking the current URL
 const isProduction = window.location.hostname !== 'localhost' && 
                      window.location.hostname !== '127.0.0.1';
 
