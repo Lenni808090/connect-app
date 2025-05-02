@@ -7,10 +7,10 @@ import { useEffect } from "react";
 const App = () => {
 
   useEffect(() => {
-    socket.connect();
+    socket.connect();  // Manually connect when App component mounts
     
     return () => {
-      socket.disconnect();
+      socket.disconnect();  // Clean up on unmount
     }
   }, []);
 
