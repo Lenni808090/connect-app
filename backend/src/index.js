@@ -14,9 +14,10 @@ const PORT = process.env.PORT;
 // Configure CORS to allow all origins (USE WITH CAUTION!)
 // This allows requests from any domain.
 // It's generally recommended to specify allowed origins for security.
+// Configure CORS to allow specific origin when credentials are included
 app.use(cors({
-  origin: "*", // Allow any origin
-  credentials: true, // Keep this if you need cookies/authorization headers
+  origin: "https://connect-app-frontend.onrender.com", // Specify your frontend origin
+  credentials: true, // Keep this as your frontend sends credentials
 }));
 
 // // Previous specific origin configuration (commented out or removed)
