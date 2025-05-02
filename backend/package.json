@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/index.js" // Add this line
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
