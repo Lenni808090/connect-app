@@ -57,10 +57,7 @@ const LobbyPage = () => {
   const handleStartGame = () => {
     if (isHost) {
       getRoom(roomId);
-      if(room?.players.length <= 2){
-        alert("Mindestens 2 Spieler werden benötigt!");
-        return;
-      }
+
       socket.emit('start_game', roomId);
       startGame({roomId});
     }
