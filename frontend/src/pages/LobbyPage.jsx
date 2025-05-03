@@ -5,7 +5,7 @@ import socket from '../utils/socket';
 
 const LobbyPage = () => {
   const { roomId } = useParams();
-  const { players, getPlayerNames, leaveRoom, startGame, setCategories, setScoreLimit: setScoreLimitStore, room,  getRoom } = useRoomStore();
+  const { players, getPlayerNames, leaveRoom, startGame, setCategories, setScoreLimit: setScoreLimitStore,  getRoom } = useRoomStore();
   const navigate = useNavigate();
   const [copySuccess, setCopySuccess] = useState('');
   const [scoreLimit, setScoreLimit] = useState(5);
